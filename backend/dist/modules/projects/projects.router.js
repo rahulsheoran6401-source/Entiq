@@ -1,0 +1,14 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const projects_controller_1 = require("./projects.controller");
+const auth_1 = require("../../middlewares/auth");
+const router = (0, express_1.Router)();
+router.use(auth_1.authenticate);
+router.get('/', projects_controller_1.getProjects);
+router.get('/:id', projects_controller_1.getProjectById);
+router.post('/', projects_controller_1.createProject);
+router.put('/:id', projects_controller_1.updateProject);
+router.delete('/:id', projects_controller_1.deleteProject);
+router.post('/:id/restore', projects_controller_1.restoreProject);
+exports.default = router;

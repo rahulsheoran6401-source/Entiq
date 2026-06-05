@@ -1,0 +1,93 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Light mode variables (default) */
+    --color-bg: 248 250 252;
+    --color-surface: 255 255 255;
+    --color-surface-hover: 241 245 249;
+    --color-border: 226 232 240;
+    
+    --color-gray-100: 15 23 42;
+    --color-gray-200: 30 41 59;
+    --color-gray-300: 51 65 85;
+    --color-gray-400: 71 85 105;
+    --color-gray-500: 100 116 139;
+  }
+
+  .dark {
+    /* Dark mode variables */
+    --color-bg: 14 17 22;
+    --color-surface: 22 27 34;
+    --color-surface-hover: 33 38 45;
+    --color-border: 48 54 61;
+    
+    --color-gray-100: 243 244 246;
+    --color-gray-200: 229 231 235;
+    --color-gray-300: 209 213 219;
+    --color-gray-400: 156 163 175;
+    --color-gray-500: 107 114 128;
+  }
+
+  body {
+    background-color: rgb(var(--color-bg));
+    color: rgb(var(--color-gray-100));
+    @apply font-sans selection:bg-primary-500/30 selection:text-primary-600 dark:selection:text-white;
+    margin: 0;
+    padding: 0;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+@layer components {
+  .app-container {
+    @apply min-h-screen flex flex-col bg-bg;
+  }
+
+  .header {
+    @apply sticky top-0 z-50 backdrop-blur-md border-b border-border h-14 flex items-center justify-between px-6;
+    background-color: rgb(var(--color-bg) / 0.8);
+  }
+
+  .glass-panel {
+    @apply bg-surface border border-border shadow-subtle rounded-xl;
+  }
+
+  .cf-input {
+    @apply w-full bg-bg border border-border rounded-lg px-3 py-2 text-sm text-gray-100 focus:outline-none focus:ring-1 focus:ring-primary-500 focus:border-primary-500 transition-all placeholder:text-gray-500;
+  }
+
+  .btn-primary {
+    @apply flex items-center justify-center gap-2 bg-primary-600 hover:bg-primary-500 text-white font-medium px-4 py-2 rounded-lg transition-all shadow-md shadow-primary-500/20 active:scale-95;
+  }
+
+  .btn-secondary {
+    @apply flex items-center justify-center gap-2 bg-surface hover:bg-surfaceHover text-gray-200 font-medium px-4 py-2 border border-border rounded-lg transition-all active:scale-95;
+  }
+
+  .btn-danger {
+    @apply flex items-center justify-center gap-2 bg-error/10 hover:bg-error/20 text-error font-medium px-4 py-2 border border-error/20 rounded-lg transition-all active:scale-95;
+  }
+
+  .badge-success {
+    @apply bg-success/10 text-success text-xs font-medium px-2 py-0.5 rounded border border-success/20;
+  }
+}
+
+/* Premium micro-scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  @apply bg-transparent;
+}
+::-webkit-scrollbar-thumb {
+  @apply bg-border rounded-full;
+}
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-gray-500;
+}

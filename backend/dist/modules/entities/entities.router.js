@@ -1,0 +1,12 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const entities_controller_1 = require("./entities.controller");
+const auth_1 = require("../../middlewares/auth");
+const router = (0, express_1.Router)({ mergeParams: true });
+router.use(auth_1.authenticate);
+router.get('/', entities_controller_1.getEntities);
+router.post('/', entities_controller_1.createEntity);
+router.put('/:entityId', entities_controller_1.updateEntitySchema);
+router.delete('/:entityId', entities_controller_1.deleteEntity);
+exports.default = router;

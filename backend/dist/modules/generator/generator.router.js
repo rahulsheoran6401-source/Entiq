@@ -1,0 +1,14 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const generator_controller_1 = require("./generator.controller");
+const auth_1 = require("../../middlewares/auth");
+const router = (0, express_1.Router)({ mergeParams: true });
+router.use(auth_1.authenticate);
+router.get('/', generator_controller_1.getRecords);
+router.post('/', generator_controller_1.createRecord);
+router.get('/:recordId', generator_controller_1.getRecordById);
+router.put('/:recordId', generator_controller_1.updateRecord);
+router.delete('/:recordId', generator_controller_1.deleteRecord);
+router.post('/:recordId/restore', generator_controller_1.restoreRecord);
+exports.default = router;
