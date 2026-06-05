@@ -54,6 +54,7 @@ interface StoreState {
   fetchProjects: () => Promise<void>;
   createProject: (name: string, description?: string) => Promise<Project>;
   updateProject: (id: string, name: string, description?: string) => Promise<Project>;
+  deleteProject: (id: string) => Promise<void>;
   updateProfile: (name: string) => Promise<void>;
   
   fetchProjectDetails: (projectId: string) => Promise<void>;
@@ -142,6 +143,19 @@ export const useStore = create<StoreState>((set, get) => ({
       const errMsg = err.response?.data?.error?.message || 'Failed to update project';
       set({ error: errMsg, isLoading: false });
       throw new Error(errMsg);
+    }
+  },
+
+  deleteProject: async (id) => {
+    set({ isLoading: true, error: null });
+    try {
+      await api.delete(`/projects/${id}`);
+      set((state) => ({
+        projects: state.projects.filter(p => p.id !== id),
+        isLoading: false,
+      }));
+    } catch (err: any) {
+      set({ error: err.response?.data?.error?.message || 'Failed to delete project', isLoading: false });
     }
   },
 
