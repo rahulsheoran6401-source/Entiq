@@ -77,10 +77,8 @@ export default function Dashboard() {
       {/* Header */}
       <header className="header">
         <div className="flex items-center gap-3 cursor-pointer" onClick={() => navigate('/')}>
-          <div className="w-7 h-7 rounded-lg bg-primary-500 flex items-center justify-center text-white font-bold text-xs shadow-glow">
-            CF
-          </div>
-          <span className="font-medium text-sm text-gray-200 tracking-tight">CodeForge</span>
+          <img src="/logo.png" alt="Entiq Logo" className="w-7 h-7" />
+          <span className="font-medium text-sm text-gray-200 tracking-tight">Entiq</span>
         </div>
         
         <div className="flex items-center gap-4 relative">
@@ -290,7 +288,7 @@ export default function Dashboard() {
                     <Clock size={14} className="text-primary-400" />
                   </div>
                   <div className="flex flex-col">
-                    <span className="text-sm font-medium text-gray-200">Logged into CodeForge</span>
+                    <span className="text-sm font-medium text-gray-200">Logged into Entiq</span>
                     <span className="text-xs text-gray-500 mt-1">Just now</span>
                   </div>
                 </div>

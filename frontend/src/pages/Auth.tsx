@@ -68,7 +68,7 @@ export default function Auth() {
 
   const renderTitle = () => {
     switch (mode) {
-      case 'login': return 'Sign in to CodeForge';
+      case 'login': return 'Sign in to Entiq';
       case 'signup': return 'Create your account';
       case 'forgot-password': return 'Reset your password';
       case 'verify-otp': return 'Verify your email';
@@ -96,12 +96,12 @@ export default function Auth() {
         
         {/* Logo and Headings */}
         <div className="flex flex-col items-center text-center mb-8">
-          <div 
+          <img 
+            src="/logo.png" 
+            alt="Entiq Logo" 
             onClick={() => navigate('/')}
-            className="h-12 w-12 bg-primary-500 rounded-xl flex items-center justify-center font-bold text-2xl text-white shadow-glow mb-6 cursor-pointer hover:scale-105 transition-transform"
-          >
-            CF
-          </div>
+            className="h-12 w-12 mb-6 cursor-pointer hover:scale-105 transition-transform"
+          />
           <h2 className="text-2xl font-bold text-gray-100 tracking-tight">
             {renderTitle()}
           </h2>

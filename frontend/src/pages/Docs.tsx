@@ -34,10 +34,8 @@ export default function Docs() {
       <header className="header sticky top-0 z-50">
         <div className="w-full px-6 h-14 flex items-center justify-between">
           <div className="flex items-center gap-3 cursor-pointer" onClick={() => navigate('/')}>
-            <div className="w-7 h-7 rounded-lg bg-primary-500 flex items-center justify-center text-white font-bold text-xs shadow-glow">
-              CF
-            </div>
-            <span className="font-semibold text-[15px] text-gray-100 tracking-tight">CodeForge Docs</span>
+            <img src="/logo.png" alt="Entiq Logo" className="w-7 h-7" />
+            <span className="font-semibold text-[15px] text-gray-100 tracking-tight">Entiq Docs</span>
           </div>
           <nav className="flex items-center gap-5">
             {token ? (
@@ -84,7 +82,7 @@ export default function Docs() {
             </div>
             <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight text-gray-100 mb-6 leading-tight">Platform Documentation</h1>
             <p className="text-xl text-gray-400 leading-relaxed max-w-2xl">
-              Comprehensive guides to building metadata-driven applications using CodeForge entities, validation rules, and generated APIs.
+              Comprehensive guides to building metadata-driven applications using Entiq entities, validation rules, and generated APIs.
             </p>
           </div>
 
@@ -98,7 +96,7 @@ export default function Docs() {
                 <h2 className="text-3xl font-bold text-gray-100">Getting Started</h2>
               </div>
               <p className="text-gray-300 leading-relaxed text-lg mb-8 max-w-3xl">
-                CodeForge is a low-code infrastructure platform designed to abstract away repetitive CRUD logic. By defining your data models visually, CodeForge automatically provisions the underlying database structures and exposes robust REST APIs for integration.
+                Entiq is a low-code infrastructure platform designed to abstract away repetitive CRUD logic. By defining your data models visually, Entiq automatically provisions the underlying database structures and exposes robust REST APIs for integration.
               </p>
               
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
@@ -128,7 +126,7 @@ export default function Docs() {
                   <span className="text-xs bg-surface px-2 py-1 rounded text-gray-400 border border-border">Copy</span>
                 </div>
                 <pre>
-<span className="text-primary-400">fetch</span>(<span className="text-success">'http://localhost:5000/api/v1/projects/YOUR_ID/resources/employee'</span>, {'{'}
+<span className="text-primary-400">fetch</span>(<span className="text-success">'https://code-forge-backend-99l4.onrender.com/api/v1/projects/YOUR_ID/resources/employee'</span>, {'{'}
   <span className="text-gray-400">headers</span>: {'{'}
     <span className="text-success">'Authorization'</span>: <span className="text-secondary-400">'Bearer YOUR_JWT_TOKEN'</span>
   {'}'}
@@ -175,7 +173,7 @@ export default function Docs() {
                   <li>Click <span className="font-semibold text-primary-400">New Entity</span> in the sidebar.</li>
                   <li>Set the Entity Name (e.g., <code>Customer</code>) and API Slug (e.g., <code>customers</code>).</li>
                   <li>Add fields using the Schema Builder. Select types (Text, Number, Boolean, Date) and set constraints like Required or Unique.</li>
-                  <li>Click Save. CodeForge immediately provisions the database table.</li>
+                  <li>Click Save. Entiq immediately provisions the database table.</li>
                 </ol>
               </div>
             </section>
@@ -188,7 +186,7 @@ export default function Docs() {
                 <h2 className="text-3xl font-bold text-gray-100">Records</h2>
               </div>
               <p className="text-gray-300 leading-relaxed text-lg mb-4 max-w-3xl">
-                Records are individual rows of data conforming to the schema of an entity. CodeForge dynamically renders Admin UIs to create, read, update, and delete these rows without writing SQL.
+                Records are individual rows of data conforming to the schema of an entity. Entiq dynamically renders Admin UIs to create, read, update, and delete these rows without writing SQL.
               </p>
             </section>
 
@@ -212,7 +210,7 @@ export default function Docs() {
                 <h2 className="text-3xl font-bold text-gray-100">Validation</h2>
               </div>
               <p className="text-gray-300 leading-relaxed text-lg mb-6 max-w-3xl">
-                CodeForge automatically enforces validation on API requests based on entity schema. Required fields, type coercion, and enum verification are handled out-of-the-box.
+                Entiq automatically enforces validation on API requests based on entity schema. Required fields, type coercion, and enum verification are handled out-of-the-box.
               </p>
             </section>
             
@@ -224,7 +222,7 @@ export default function Docs() {
                 <h2 className="text-3xl font-bold text-gray-100">FAQ</h2>
               </div>
               <p className="text-gray-300 leading-relaxed text-lg mb-6 max-w-3xl">
-                Frequently asked questions about CodeForge capabilities.
+                Frequently asked questions about Entiq capabilities.
               </p>
             </section>
 

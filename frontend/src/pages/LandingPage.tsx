@@ -13,10 +13,8 @@ export default function LandingPage() {
       <nav className="header fixed top-0 w-full z-50">
         <div className="max-w-7xl mx-auto px-6 h-14 flex items-center justify-between w-full">
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-primary-500 flex items-center justify-center text-white font-bold text-xs shadow-glow">
-              CF
-            </div>
-            <span className="font-semibold tracking-tight text-gray-100 text-lg">CodeForge</span>
+            <img src="/logo.png" alt="Entiq Logo" className="w-8 h-8" />
+            <span className="font-semibold tracking-tight text-gray-100 text-lg">Entiq</span>
           </div>
           <div className="flex items-center gap-6">
             <button onClick={() => navigate('/docs')} className="text-sm font-medium text-gray-400 hover:text-gray-100 transition-colors hidden sm:block">Documentation</button>
@@ -83,7 +81,7 @@ export default function LandingPage() {
               <div className="w-3 h-3 rounded-full bg-error/80"></div>
               <div className="w-3 h-3 rounded-full bg-amber-500/80"></div>
               <div className="w-3 h-3 rounded-full bg-success/80"></div>
-              <div className="mx-auto text-xs font-mono text-gray-500 bg-surface px-4 py-1 rounded-md border border-border">codeforge.app / dashboard</div>
+              <div className="mx-auto text-xs font-mono text-gray-500 bg-surface px-4 py-1 rounded-md border border-border">entiq.app / dashboard</div>
             </div>
             <div className="flex h-[400px] md:h-[500px]">
               {/* Sidebar */}
@@ -149,7 +147,7 @@ export default function LandingPage() {
                 </div>
                 <h3 className="text-xl font-bold text-gray-100 mb-3">Auto Provision</h3>
                 <p className="text-sm text-gray-400 leading-relaxed">
-                  CodeForge instantly provisions the underlying database tables and generates highly optimized REST API endpoints.
+                  Entiq instantly provisions the underlying database tables and generates highly optimized REST API endpoints.
                 </p>
               </div>
               
@@ -230,10 +228,8 @@ export default function LandingPage() {
 
       {/* Footer */}
       <footer className="py-12 border-t border-border bg-surface text-center flex flex-col items-center justify-center">
-        <div className="w-8 h-8 rounded-lg bg-primary-500 flex items-center justify-center text-white font-bold text-xs shadow-glow mb-4 opacity-50">
-          CF
-        </div>
-        <p className="text-sm text-gray-500">© {new Date().getFullYear()} CodeForge Platform. Crafted for builders.</p>
+        <img src="/logo.png" alt="Entiq Logo" className="w-8 h-8 mb-4 opacity-50" />
+        <p className="text-sm text-gray-500">© {new Date().getFullYear()} Entiq Platform. Crafted for builders.</p>
       </footer>
     </div>
   );

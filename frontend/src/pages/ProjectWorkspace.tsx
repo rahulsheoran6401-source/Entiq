@@ -83,9 +83,7 @@ export default function ProjectWorkspace() {
           </button>
           <div className="h-5 w-px bg-border mx-1" />
           <div className="flex items-center gap-3">
-            <div className="w-7 h-7 rounded-lg bg-primary-500 flex items-center justify-center text-white font-bold text-xs shadow-glow">
-              CF
-            </div>
+            <img src="/logo.png" alt="Entiq Logo" className="w-7 h-7" />
             <span className="font-semibold text-[15px] text-gray-100 tracking-tight">{currentProject?.name}</span>
             <span className="bg-surface border border-border text-gray-400 text-[10px] px-2 py-0.5 rounded uppercase tracking-wider font-semibold">Workspace</span>
           </div>
@@ -427,7 +425,7 @@ export default function ProjectWorkspace() {
                           <div className="flex items-center gap-2 shrink-0">
                             <button 
                               onClick={() => {
-                                navigator.clipboard.writeText(`http://localhost:5000${endpoint.path}`);
+                                navigator.clipboard.writeText(`https://code-forge-backend-99l4.onrender.com${endpoint.path}`);
                                 // Would ideally show a toast here
                               }} 
                               className="text-gray-500 hover:text-gray-300 p-2 rounded-md hover:bg-surface transition-colors" title="Copy Endpoint"
