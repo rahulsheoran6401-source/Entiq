@@ -1,7 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.validateRecordPayload = validateRecordPayload;
-const client_1 = require("@prisma/client");
 /**
  * Validates a record body payload against the dynamic fields of an entity schema.
  * Strips unknown fields, enforces types, formats values, and applies defaults.
@@ -64,20 +63,21 @@ function validateRecordPayload(payload, fields, isUpdate = false) {
 function validateAndCastField(value, field) {
     if (value === null)
         return null;
-    switch (field.type) {
-        case client_1.FieldType.TEXT:
+    const type = (field.type || '').toUpperCase();
+    switch (type) {
+        case 'TEXT':
             if (typeof value !== 'string') {
                 throw new Error(`Expected a text string, received: ${typeof value}`);
             }
             return value;
-        case client_1.FieldType.NUMBER: {
+        case 'NUMBER': {
             const parsedNum = Number(value);
             if (isNaN(parsedNum)) {
                 throw new Error(`Expected a valid number, received: '${value}'`);
             }
             return parsedNum;
         }
-        case client_1.FieldType.BOOLEAN: {
+        case 'BOOLEAN': {
             if (typeof value === 'boolean')
                 return value;
             if (value === 'true' || value === 1 || value === '1')
@@ -86,17 +86,18 @@ function validateAndCastField(value, field) {
                 return false;
             throw new Error(`Expected a boolean, received: '${value}'`);
         }
-        case client_1.FieldType.DATE: {
+        case 'DATE': {
             const date = new Date(value);
             if (isNaN(date.getTime())) {
                 throw new Error(`Expected a valid Date, received: '${value}'`);
             }
             return date.toISOString();
         }
-        case client_1.FieldType.ENUM: {
+        case 'ENUM': {
             const strVal = String(value);
-            if (!field.options || !field.options.includes(strVal)) {
-                const allowed = field.options ? field.options.join(', ') : 'none';
+            const optionsArray = field.options ? field.options.split(',') : [];
+            if (!optionsArray.includes(strVal)) {
+                const allowed = field.options ? field.options.split(',').join(', ') : 'none';
                 throw new Error(`Value '${strVal}' is not valid. Allowed options: [${allowed}]`);
             }
             return strVal;
@@ -106,16 +107,17 @@ function validateAndCastField(value, field) {
     }
 }
 function castValue(valueStr, type, options) {
-    switch (type) {
-        case client_1.FieldType.TEXT:
+    const t = (type || '').toUpperCase();
+    switch (t) {
+        case 'TEXT':
             return valueStr;
-        case client_1.FieldType.NUMBER:
+        case 'NUMBER':
             return Number(valueStr);
-        case client_1.FieldType.BOOLEAN:
+        case 'BOOLEAN':
             return valueStr === 'true' || valueStr === '1';
-        case client_1.FieldType.DATE:
+        case 'DATE':
             return new Date(valueStr).toISOString();
-        case client_1.FieldType.ENUM:
+        case 'ENUM':
             return valueStr;
         default:
             return valueStr;

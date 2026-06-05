@@ -7,7 +7,8 @@ exports.deleteEntity = deleteEntity;
 const db_1 = require("../../core/db");
 const errors_1 = require("../../core/errors");
 const slug_1 = require("../../utils/slug");
-const client_1 = require("@prisma/client");
+// Define allowed field type strings (since Prisma enum removed)
+const ALLOWED_TYPES = ['TEXT', 'NUMBER', 'BOOLEAN', 'DATE', 'ENUM'];
 /**
  * Controller handles dynamic Entities & Fields schemas.
  */
@@ -38,7 +39,10 @@ async function getEntities(req, res, next) {
             apiSlug: e.apiSlug,
             createdAt: e.createdAt,
             updatedAt: e.updatedAt,
-            fields: e.fields,
+            fields: e.fields.map(f => ({
+                ...f,
+                options: f.options ? f.options.split(',') : [],
+            })),
             recordsCount: e._count.records,
         }));
         return res.status(200).json({ entities: formattedEntities });
@@ -86,12 +90,21 @@ async function createEntity(req, res, next) {
             }
             seenFieldSlugs.add(fieldSlug);
             // Validate field type
-            if (!Object.values(client_1.FieldType).includes(f.type)) {
+            if (!ALLOWED_TYPES.includes(f.type)) {
                 return next(new errors_1.AppError(`Validation failed: Invalid field type '${f.type}'`, 400));
             }
-            // If ENUM, validate options
-            if (f.type === client_1.FieldType.ENUM && (!f.options || !Array.isArray(f.options) || f.options.length === 0)) {
-                return next(new errors_1.AppError(`Validation failed: ENUM field '${f.name}' must have options defined`, 400));
+            // If ENUM, accept options as array or comma‑separated string
+            if (f.type === 'ENUM') {
+                if (!f.options) {
+                    return next(new errors_1.AppError(`Validation failed: ENUM field '${f.name}' must have options defined`, 400));
+                }
+                // Normalize to array for internal handling
+                if (typeof f.options === 'string') {
+                    f.options = f.options.split(',').map((o) => o.trim()).filter((o) => o);
+                }
+                if (!Array.isArray(f.options) || f.options.length === 0) {
+                    return next(new errors_1.AppError(`Validation failed: ENUM field '${f.name}' must have non‑empty options`, 400));
+                }
             }
             fieldsToCreate.push({
                 name: f.name,
@@ -99,7 +112,8 @@ async function createEntity(req, res, next) {
                 type: f.type,
                 required: !!f.required,
                 defaultValue: f.defaultValue !== undefined ? String(f.defaultValue) : null,
-                options: f.type === client_1.FieldType.ENUM ? f.options.map(String) : [],
+                // Store options as comma‑separated string if ENUM
+                options: f.type === 'ENUM' ? (Array.isArray(f.options) ? f.options.map(String).join(',') : String(f.options)) : null,
             });
         }
         // Create Entity and Fields in atomic database transaction
@@ -124,10 +138,17 @@ async function createEntity(req, res, next) {
                 include: { fields: true },
             });
         });
+        const formattedEntity = newEntity ? {
+            ...newEntity,
+            fields: newEntity.fields.map(f => ({
+                ...f,
+                options: f.options ? f.options.split(',') : [],
+            })),
+        } : null;
         return res.status(201).json({
             message: 'Entity and schema fields created successfully',
             entity: {
-                ...newEntity,
+                ...formattedEntity,
                 recordsCount: 0,
             },
         });
@@ -200,11 +221,19 @@ async function updateEntitySchema(req, res, next) {
                 }
                 seenFieldSlugs.add(fieldSlug);
                 // Validation for type & enum options
-                if (!Object.values(client_1.FieldType).includes(incomingField.type)) {
+                if (!ALLOWED_TYPES.includes(incomingField.type)) {
                     throw new errors_1.AppError(`Validation failed: Invalid field type '${incomingField.type}'`, 400);
                 }
-                if (incomingField.type === client_1.FieldType.ENUM && (!incomingField.options || incomingField.options.length === 0)) {
-                    throw new errors_1.AppError(`Validation failed: ENUM field '${incomingField.name}' requires options`, 400);
+                if (incomingField.type === 'ENUM') {
+                    if (!incomingField.options) {
+                        throw new errors_1.AppError(`Validation failed: ENUM field '${incomingField.name}' requires options`, 400);
+                    }
+                    if (typeof incomingField.options === 'string') {
+                        incomingField.options = incomingField.options.split(',').map((o) => o.trim()).filter((o) => o);
+                    }
+                    if (!Array.isArray(incomingField.options) || incomingField.options.length === 0) {
+                        throw new errors_1.AppError(`Validation failed: ENUM field '${incomingField.name}' requires non‑empty options`, 400);
+                    }
                 }
                 const fieldData = {
                     name: incomingField.name,
@@ -212,7 +241,7 @@ async function updateEntitySchema(req, res, next) {
                     type: incomingField.type,
                     required: !!incomingField.required,
                     defaultValue: incomingField.defaultValue !== undefined ? String(incomingField.defaultValue) : null,
-                    options: incomingField.type === client_1.FieldType.ENUM ? incomingField.options.map(String) : [],
+                    options: incomingField.type === 'ENUM' ? (Array.isArray(incomingField.options) ? incomingField.options.map(String).join(',') : String(incomingField.options)) : null,
                 };
                 if (incomingField.id && existingFieldIds.includes(incomingField.id)) {
                     // UPDATE
@@ -236,9 +265,16 @@ async function updateEntitySchema(req, res, next) {
                 include: { fields: true },
             });
         });
+        const formattedEntity = updatedEntity ? {
+            ...updatedEntity,
+            fields: updatedEntity.fields.map(f => ({
+                ...f,
+                options: f.options ? f.options.split(',') : [],
+            })),
+        } : null;
         return res.status(200).json({
             message: 'Entity schema updated successfully',
-            entity: updatedEntity,
+            entity: formattedEntity,
         });
     }
     catch (err) {

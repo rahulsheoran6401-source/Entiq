@@ -38,6 +38,7 @@ app.use('*', (req, res, next) => {
 // Register Global Error Handler Middleware
 app.use(errors_1.errorHandler);
 app.listen(PORT, () => {
+    console.log('🔑 DATABASE_URL:', process.env.DATABASE_URL);
     console.log(`========================================`);
     console.log(` 🚀 CodeForge Dynamic Backend Engine    `);
     console.log(` ⚡ Running on http://localhost:${PORT} `);

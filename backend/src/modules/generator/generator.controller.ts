@@ -211,7 +211,7 @@ export async function updateRecord(req: AuthenticatedRequest, res: Response, nex
 
     // Merge existing JSON properties with incoming changes
     const mergedData = {
-      ...(record.data as Record<string, any>),
+      ...(JSON.parse(record.data) as Record<string, any>),
       ...validation.data,
     };
 

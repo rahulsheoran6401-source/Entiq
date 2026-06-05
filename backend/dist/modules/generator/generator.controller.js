@@ -52,7 +52,7 @@ async function getRecords(req, res, next) {
             id: r.id,
             createdAt: r.createdAt,
             updatedAt: r.updatedAt,
-            ...r.data,
+            ...JSON.parse(r.data),
         }));
         // 1. Apply Dynamic Metadata Filtering
         for (const field of entity.fields) {
@@ -92,7 +92,10 @@ async function getRecords(req, res, next) {
                 id: entity.id,
                 name: entity.name,
                 apiSlug: entity.apiSlug,
-                fields: entity.fields,
+                fields: entity.fields.map(f => ({
+                    ...f,
+                    options: f.options ? f.options.split(',') : [],
+                })),
             },
             pagination: {
                 page,
@@ -127,7 +130,7 @@ async function getRecordById(req, res, next) {
                 id: record.id,
                 createdAt: record.createdAt,
                 updatedAt: record.updatedAt,
-                ...record.data,
+                ...JSON.parse(record.data),
             },
         });
     }
@@ -149,7 +152,7 @@ async function createRecord(req, res, next) {
         const record = await db_1.prisma.entityRecord.create({
             data: {
                 entityId: entity.id,
-                data: validation.data,
+                data: JSON.stringify(validation.data),
             },
         });
         return res.status(201).json({
@@ -188,13 +191,13 @@ async function updateRecord(req, res, next) {
         }
         // Merge existing JSON properties with incoming changes
         const mergedData = {
-            ...record.data,
+            ...JSON.parse(record.data),
             ...validation.data,
         };
         // Update in database
         const updatedRecord = await db_1.prisma.entityRecord.update({
             where: { id: recordId },
-            data: { data: mergedData },
+            data: { data: JSON.stringify(mergedData) },
         });
         return res.status(200).json({
             message: 'Record updated successfully',
@@ -265,7 +268,7 @@ async function restoreRecord(req, res, next) {
                 id: restoredRecord.id,
                 createdAt: restoredRecord.createdAt,
                 updatedAt: restoredRecord.updatedAt,
-                ...restoredRecord.data,
+                ...JSON.parse(restoredRecord.data),
             },
         });
     }

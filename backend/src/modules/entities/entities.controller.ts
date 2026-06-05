@@ -113,7 +113,7 @@ export async function createEntity(req: AuthenticatedRequest, res: Response, nex
           }
           // Normalize to array for internal handling
           if (typeof f.options === 'string') {
-            f.options = f.options.split(',').map(o => o.trim()).filter(o => o);
+            f.options = f.options.split(',').map((o: string) => o.trim()).filter((o: string) => o);
           }
           if (!Array.isArray(f.options) || f.options.length === 0) {
             return next(new AppError(`Validation failed: ENUM field '${f.name}' must have non‑empty options`, 400));
@@ -262,7 +262,7 @@ export async function updateEntitySchema(req: AuthenticatedRequest, res: Respons
               throw new AppError(`Validation failed: ENUM field '${incomingField.name}' requires options`, 400);
             }
             if (typeof incomingField.options === 'string') {
-              incomingField.options = incomingField.options.split(',').map(o => o.trim()).filter(o => o);
+              incomingField.options = incomingField.options.split(',').map((o: string) => o.trim()).filter((o: string) => o);
             }
             if (!Array.isArray(incomingField.options) || incomingField.options.length === 0) {
               throw new AppError(`Validation failed: ENUM field '${incomingField.name}' requires non‑empty options`, 400);
